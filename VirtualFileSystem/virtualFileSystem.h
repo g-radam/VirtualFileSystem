@@ -87,6 +87,18 @@ class File
 		 File(FileSystem &fileSystem, std::string parentDirectory, std::string name);
 		~File();
 		
+		// Set
+		void				setName					(const std::string &name);
+		void				setPath					(const std::string &path);
+		void				setSize					(const boost::uint32_t &size);
+		void				setAttributes			(const Attributes &attributes);
+		void				setAccessControlList	(const AccessControlList &acl);
+		
+		// Get
+		std::string&		getName					(void);
+		std::string&		getPath					(void);
+		boost::uint32_t&	getSize					(void);
+		AccessControllList&	getAccessControllList	(void);
 		
 		
 };
