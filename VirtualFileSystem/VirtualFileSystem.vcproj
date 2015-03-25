@@ -172,6 +172,14 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\path.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\path.h"
+				>
+			</File>
+			<File
 				RelativePath=".\virtualFileSystem.h"
 				>
 			</File>
