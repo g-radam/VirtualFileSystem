@@ -14,16 +14,17 @@
 
 // User Includes
 #include "path.h"
-
+#include "attributes.h"
 
 
 // Class Definitions
-class Path;
 class AccessControlList;
-class Attributes;
 class NodeBase;
+class File;
 class Folder;
 class FileSystem;
+
+
 
 
 // Inode
@@ -59,35 +60,6 @@ class AccessControlList
 		
 };
 
-
-// Modifiable attributes for each node
-class Attributes
-{
-	public:
-		bool				   _protected;	 // System File (never viewed by user)
-		bool				   _hidden;		 // Hidden (can be toggled)
-		boost::gregorian::date _dateCreated; // Date of creation
-		boost::gregorian::date _dateUpdated; // Date of update
-		
-	public:
-		 Attributes();
-		~Attributes();
-
-
-		// Set
-		void					setProtected	(bool isProtected);
-		void					setHidden		(bool isHidden);
-		void					setDateCreated	(boost::gregorian::date date);
-		void					setDateUpdated	(boost::gregorian::date date);
-		
-		// Get
-		bool					getProtected	(void);
-		bool					getHidden		(void);
-		boost::gregorian::date	getDateCreated	(void);
-		boost::gregorian::date	getDateUpdated	(void);
-
-};
-
 // Base for all Inodes - files, folders
 class InodeBase
 {
@@ -110,7 +82,7 @@ class InodeBase
 		std::string&		getName					(void);
 		std::string&		getPath					(void);
 		boost::uint32_t&	getSize					(void);
-		Attrobutes&			getAttributes			(void);
+		Attributes&			getAttributes			(void);
 		AccessControllList&	getAccessControllList	(void);
 };
 
@@ -137,7 +109,7 @@ class Folder : InodeBase
 		std::vector<Inode> _inodes;
 		
 	public:
-		 File(FileSystem &fileSystem, std::string parentDirectory, std::string name); //add .. & . 
+		 File(FileSystem &fileSystem, std::string parentDirectory, std::string name); //add '..' & '.' files 
 		~File();
 		
 		void				setInodes	(std::vector<Inode> inodes);
@@ -146,7 +118,7 @@ class Folder : InodeBase
 };
 
 
-
+// Filesystem
 class FileSystem
 {
 	public:	

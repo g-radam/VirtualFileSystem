@@ -13,16 +13,16 @@
 
 
 
-Path::Path(std::string path, std::string seperator)
+Path::Path(std::string path, std::string saperator)
 {
-	Path::_seperator = seperator;
+	Path::_separator = saperator;
 	Path::_components = Path::extractComponentsFromPath(path);
 	Path::buildPathFromComponents();
 }
 
 Path::Path(std::string path)
 {
-	Path::_seperator = Path::extractSeperatorFromPath(path);
+	Path::_separator = Path::extractSeparatorFromPath(path);
 	Path::_components = Path::extractComponentsFromPath(path);
 	Path::buildPathFromComponents();
 }
@@ -41,14 +41,14 @@ Path::~Path()
 void						Path::setPath						(std::string path)
 {
 	Path::_components.clear();
-	Path::_seperator = Path::extractSeperatorFromPath(path);
+	Path::_separator = Path::extractSeparatorFromPath(path);
 	Path::_components = Path::extractComponentsFromPath(path);
 	Path::buildPathFromComponents();
 }
 
-void						Path::setSeperator					(std::string seperator)
+void						Path::setSeparator					(std::string separator)
 {
-	Path::_seperator = seperator;
+	Path::_separator = separator;
 	Path::buildPathFromComponents();
 }
 
@@ -64,9 +64,9 @@ std::string					Path::getPath						()
 	return Path::_path;
 }
 
-std::string					Path::getSeperator					()
+std::string					Path::getSeparator					()
 {
-	return Path::_seperator;
+	return Path::_separator;
 }
 
 std::vector<std::string>&	Path::getComponents					()
@@ -103,18 +103,18 @@ bool						Path::isEmpty						()
 // Methods
 void						Path::push							(Path &path)
 {
-	// Find and use a seperator
-	if(!Path::_seperator.empty()) 
-		// Priority (keep current seperator)
-		Path::setSeperator(Path::_seperator);
+	// Find and use a separator
+	if(!Path::_separator.empty())
+		// Priority (keep current separator)
+		Path::setSeparator(Path::_separator);
 	else {
 		// Otherwise use rhs operator
-		std::string rhsSeperator = Path::extractSeperatorFromPath(path);
-		if(!rhsSeperator.empty()) { 
-			Path::setSeperator(rhsSeperator);
+		std::string rhsSeparator = Path::extractSeparatorFromPath(path);
+		if(!rhsSeparator.empty()) {
+			Path::setSeparator(rhsSeparator);
 		} else {
 			// Error, Unable to reconstruct path
-			std::cout << "Path: Error: push Unable to append path to THIS - Unknown seperator" << std::endl;
+			std::cout << "Path: Error: push Unable to append path to THIS - Unknown separator" << std::endl;
 			return;
 		}
 	}
@@ -124,18 +124,18 @@ void						Path::push							(Path &path)
 }
 void						Path::push							(std::string component)
 {
-	// Find and use a seperator
-	if(!Path::_seperator.empty()) 
-		// Priority (keep current seperator)
-		Path::setSeperator(Path::_seperator);
+	// Find and use a separator
+	if(!Path::_separator.empty())
+		// Priority (keep current separator)
+		Path::setSeparator(Path::_separator);
 	else {
 		// Otherwise use rhs operator
-		std::string rhsSeperator = Path::extractSeperatorFromPath(component);
-		if(!rhsSeperator.empty()) { 
-			Path::setSeperator(rhsSeperator);
+		std::string rhsSeparator = Path::extractSeparatorFromPath(component);
+		if(!rhsSeparator.empty()) {
+			Path::setSeparator(rhsSeparator);
 		} else {
 			// Error, Unable to reconstruct path
-			std::cout << "Path: Error: push Unable to append path to THIS - Unknown seperator" << std::endl;
+			std::cout << "Path: Error: push Unable to append path to THIS - Unknown separator" << std::endl;
 			return;
 		}
 	}
@@ -281,7 +281,7 @@ Path						Path::left							(std::string component, bool include)
 {
 	int position = Path::find(component);
 	Path leftPath;
-	leftPath.setSeperator(Path::_seperator);
+	leftPath.setSeparator(Path::_separator);
 
 	// If the component has at least 1 left component
 	if((position > 0) && (position < Path::_components.size())) {
@@ -309,7 +309,7 @@ Path						Path::left							(Path& path, bool include)
 {
 	int position = Path::find(path);
 	Path leftPath;
-	leftPath.setSeperator(Path::_seperator);
+	leftPath.setSeparator(Path::_separator);
 
 	// If the component has at least 1 left component
 	if((position > 0) && (position < Path::_components.size())) {
@@ -337,7 +337,7 @@ Path						Path::right							(std::string component, bool include)
 {
 	int position = Path::find(component);
 	Path leftPath;
-	leftPath.setSeperator(Path::_seperator);
+	leftPath.setSeparator(Path::_separator);
 
 	// If the component has at least 1 left component
 	if((position >= 0) && (position < Path::_components.size())) {
@@ -365,7 +365,7 @@ Path						Path::right							(Path& path, bool include)
 {
 	int position = Path::find(path);
 	Path leftPath;
-	leftPath.setSeperator(Path::_seperator);
+	leftPath.setSeparator(Path::_separator);
 
 	// If the THIS has at least 1 left component at the position
 	if((position >= 0) && (position < Path::_components.size())) {
@@ -394,11 +394,11 @@ void						Path::buildPathFromComponents		()
 	// Clear Path before rebuilding
 	Path::_path = "";
 
-	// Append Component to path. Ensure trailing seperator isnt added. ie D:\games\file.txt\ <--- That   
+	// Append Component to path. Ensure trailing separator isnt added. ie D:\games\file.txt\ <--- That
 	for(unsigned int i = 0; i < Path::_components.size(); ++i) {
 		//std::cout << "rebuild it = " << Path::_components[i] << std::endl;
 		if(i < Path::_components.size()-1) 
-			Path::_path += Path::_components[i] + Path::_seperator;
+			Path::_path += Path::_components[i] + Path::_separator;
 		else
 			Path::_path += Path::_components[i];
 	}
@@ -409,17 +409,17 @@ std::vector<std::string>	Path::extractComponentsFromPath		(std::string path)
 	// Return Vector
 	std::vector<std::string> components;
 
-	// Boost splits the string up, into the componenets vector if the seperator is \ or /
+	// Boost splits the string up, into the componenets vector if the separator is \ or /
 	boost::split(components, path, boost::is_any_of("/\\"));
 
-	// Delete trailing seperators
+	// Delete trailing separators
 	if(!components.empty()) {
 		if(components.back().empty()) {
 			components.pop_back();
 		}
 	}
 
-	// Error on any blank elements (means there is a double seperator 'root/user//adam')
+	// Error on any blank elements (means there is a double separator 'root/user//adam')
 	bool emptyElement = false;
 	for(unsigned int i = 0; i < components.size(); ++i) {
 		if(components[i].empty()) {
@@ -431,15 +431,15 @@ std::vector<std::string>	Path::extractComponentsFromPath		(std::string path)
 
 	// Display issues from above
 	if(emptyElement) {
-		std::cout << "Path: Error: Multiple seperators are not valid in path: " << path << std::endl;
-		std::cout << "Path: Error: Resolving seperator issue..." << std::endl;
+		std::cout << "Path: Error: Multiple separators are not valid in path: " << path << std::endl;
+		std::cout << "Path: Error: Resolving separator issue..." << std::endl;
 	}
 
 	// Return components
 	return components;
 }
 
-std::string					Path::extractSeperatorFromPath		(std::string path)
+std::string					Path::extractSeparatorFromPath		(std::string path)
 {
 	// Find \ or /
 	unsigned int fowardslash = path.find("/");
@@ -450,21 +450,21 @@ std::string					Path::extractSeperatorFromPath		(std::string path)
 	else if (backwardslash != std::string::npos)
 		return std::string("\\");
 	
-	// Default return seperator of ""
+	// Default return separator of ""
 	return std::string();
 }
 
-std::string					Path::extractSeperatorFromPath		(Path& path)
+std::string					Path::extractSeparatorFromPath		(Path& path)
 {
-	// Return Seperator variable OR seperator found in the path itself
-	std::string seperator1 = path.getSeperator();
-	if(!seperator1.empty()) {
-		return seperator1;
+	// Return Separator variable OR separator found in the path itself
+	std::string separator1 = path.getSeparator();
+	if(!separator1.empty()) {
+		return separator1;
 	}
 
-	std::string seperator2 = Path::extractSeperatorFromPath(path.getPath());
-	if(!seperator2.empty()) {
-		return seperator2;
+	std::string separator2 = Path::extractSeparatorFromPath(path.getPath());
+	if(!separator2.empty()) {
+		return separator2;
 	}
 
 	return std::string();
@@ -485,21 +485,21 @@ Path						Path::operator+						(Path& rhs)
 	// By setting the path, it will automatically generate a new components vector
 	Path path;
 	
-	// Find and use a seperator
-	std::string thisSeperator = Path::extractSeperatorFromPath(*this);
-	if((!thisSeperator.empty())) {
-		// Priority (keep current seperator)
-		path.setSeperator(thisSeperator);
-		//std::cout << "using lhs = " << thisSeperator << std::endl;
+	// Find and use a separator
+	std::string thisSeparator = Path::extractSeparatorFromPath(*this);
+	if((!thisSeparator.empty())) {
+		// Priority (keep current separator)
+		path.setSeparator(thisSeparator);
+		//std::cout << "using lhs = " << thisSeparator << std::endl;
 	} else {
 		// Otherwise use rhs operator
-		std::string rhsSeperator = Path::extractSeperatorFromPath(rhs);
-		//std::cout << "using rhs = " << rhsSeperator << std::endl;
-		if(!rhsSeperator.empty()) { 
-			path.setSeperator(rhsSeperator);
+		std::string rhsSeparator = Path::extractSeparatorFromPath(rhs);
+		//std::cout << "using rhs = " << rhsSeparator << std::endl;
+		if(!rhsSeparator.empty()) {
+			path.setSeparator(rhsSeparator);
 		} else {
 			// Error, Unable to reconstruct path
-			std::cout << "Path: Error: push Unable to append path to THIS - Unknown seperator" << std::endl;
+			std::cout << "Path: Error: push Unable to append path to THIS - Unknown separator" << std::endl;
 			return Path();
 		}
 	}
@@ -514,24 +514,24 @@ Path						Path::operator+						(Path& rhs)
 	return path;
 }
 
-Path						Path::operator+						(std::string& rhs)
+Path						Path::operator+						(std::string rhs)
 {
 	// By setting the path, it will automatically generate a new components vector
 	Path path;
 
-	// Find and use a seperator
-	std::string thisSeperator = Path::extractSeperatorFromPath(*this);
-	if((!thisSeperator.empty())) {
-		// Priority (keep current seperator)
-		path.setSeperator(thisSeperator);
+	// Find and use a separator
+	std::string thisSeparator = Path::extractSeparatorFromPath(*this);
+	if((!thisSeparator.empty())) {
+		// Priority (keep current separator)
+		path.setSeparator(thisSeparator);
 	} else {
 		// Otherwise use rhs operator
-		std::string rhsSeperator = Path::extractSeperatorFromPath(rhs);
-		if(!rhsSeperator.empty()) { 
-			path.setSeperator(rhsSeperator);
+		std::string rhsSeparator = Path::extractSeparatorFromPath(rhs);
+		if(!rhsSeparator.empty()) {
+			path.setSeparator(rhsSeparator);
 		} else {
 			// Error, Unable to reconstruct path
-			std::cout << "Path: Error: push Unable to append path to THIS - Unknown seperator" << std::endl;
+			std::cout << "Path: Error: push Unable to append path to THIS - Unknown separator" << std::endl;
 			return Path();
 		}
 	}
@@ -541,57 +541,42 @@ Path						Path::operator+						(std::string& rhs)
 	std::vector<std::string> components = Path::extractComponentsFromPath(rhs);
 	path.getComponents().insert(path.getComponents().end(), components.begin(), components.end());
 
-	// Rebuild Path by setting the seperator
+	// Rebuild Path by setting the separator
 	path.buildPathFromComponents();
 
 	return path;
 }
 
-Path						Path::operator+						(const char *rhs)
-{
-	return Path::operator+(std::string(rhs));
-}
 
 Path						Path::operator+=					(Path& rhs)
 {
 	(*this) = Path::operator+(rhs);
 	return *this;
 }
-Path						Path::operator+=					(std::string& rhs)
+Path						Path::operator+=					(std::string rhs)
 {
 	(*this) = Path::operator+(rhs);
 	return *this;
 }
 
-Path						Path::operator+=					(const char *rhs)
-{
-	(*this) = Path::operator+(std::string(rhs));
-	return *this;
-}
-
 Path						Path::operator=						(Path& rhs)
 {
-	// This causes uneccessary rebuilding of vector and path. Fix later.
-	// Identify seperator character and apply it to THIS
-	Path::setSeperator(Path::extractSeperatorFromPath(rhs));
+	// This causes unnecessary rebuilding of vector and path. Fix later.
+	// Identify separator character and apply it to THIS
+	Path::setSeparator(Path::extractSeparatorFromPath(rhs));
 	Path::setPath(rhs.getPath()); // rebuilds(useful)
 
 	return *this;
 }
 
-Path						Path::operator=						(std::string& rhs)
+Path						Path::operator=						(std::string rhs)
 {
-	// This causes uneccessary rebuilding of vector and path. Fix later.
-	// Identify seperator character and apply it to THIS
-	Path::setSeperator(Path::extractSeperatorFromPath(rhs));
+	// This causes unnecessary rebuilding of vector and path. Fix later.
+	// Identify separator character and apply it to THIS
+	Path::setSeparator(Path::extractSeparatorFromPath(rhs));
 	Path::setPath(rhs);
 
 	return *this;
-}
-
-Path						Path::operator=						(const char *rhs)
-{
-	return Path::operator=(std::string(rhs));
 }
 
 bool						Path::operator==					(Path& rhs)
@@ -599,15 +584,11 @@ bool						Path::operator==					(Path& rhs)
 	return (Path::getPath() == rhs.getPath());
 }
 
-bool						Path::operator==					(std::string& rhs)
+bool						Path::operator==					(std::string rhs)
 {
 	return (Path::getPath() == rhs);
 }
 
-bool						Path::operator==					(const char *rhs)
-{
-	return Path::operator==(std::string(rhs));
-}
 
 std::string					Path::operator[]					(const unsigned int &index)
 {

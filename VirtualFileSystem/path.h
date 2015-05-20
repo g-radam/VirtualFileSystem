@@ -5,21 +5,17 @@
 #include <vector>
 #include <string>
 
-#include <boost/algorithm/string.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/cstdint.hpp>
-
 
 // Path Class
 class Path
 {
 	public:
-		std::string				 _seperator;			// Path Seperator
+		std::string				 _separator;			// Path Separator
 		std::string				 _path;					// Complete Path
 		std::vector<std::string> _components;			// Components used to construct path
 
 	public:
-		 Path(std::string path, std::string seperator);
+		 Path(std::string path, std::string separator);
 		 Path(std::string path);
 		 Path();
 		~Path();
@@ -27,13 +23,13 @@ class Path
 		
 		// Set
 		void						setPath						(std::string path);							// Set Path
-		void						setSeperator				(std::string seperator);					// Set Seperator
+		void						setSeparator				(std::string separator);					// Set Separator
 		
 		// Get
 		std::string					toString					(void);										// Return Path String
 		std::string					getPath						(void);										// Return Path string
-		std::string					getSeperator				(void);										// Return Seperator
-		std::vector<std::string>&	getComponents				(void);										// Return Refrence to Components vector
+		std::string					getSeparator				(void);										// Return Separator
+		std::vector<std::string>&	getComponents				(void);										// Return Reference to Components vector
 		unsigned int				size						(void);										// Return length of the path string
 		unsigned int				length						(void);										// Alias of size
 		unsigned int				depth						(void);										// Return Number of Components in the vector
@@ -59,30 +55,26 @@ class Path
 		Path						right						(std::string component, bool include);		// Returns right of the rhs found in the lhs
 		Path						right						(Path& path, bool include);					// Returns right of the rhs found in the lhs
 		
-		void						buildPathFromComponents		(void);										// Construct path from componenets vector
+		void						buildPathFromComponents		(void);										// Construct path from components vector
 		std::vector<std::string>	extractComponentsFromPath	(std::string path);							// Fill vector with components of the path
-		std::string					extractSeperatorFromPath	(std::string path);							// Identify the seperator used in the path
-		std::string					extractSeperatorFromPath	(Path& path);								// Identify the seperator used in the path
+		std::string					extractSeparatorFromPath	(std::string path);							// Identify the separator used in the path
+		std::string					extractSeparatorFromPath	(Path& path);								// Identify the separator used in the path
 
 		// Debug
 		void						displayComponents			(void);										// Cout the components in the path
 		
 		// Overloads
 		Path						operator+					(Path& rhs);								// Append RHS Path to LHS Path
-		Path						operator+					(std::string& rhs);							// Append RHS String to LHS Path
-		Path						operator+					(const char *rhs);							// Append RHS Const Char Array to LHS Path
+		Path						operator+					(std::string rhs);							// Append RHS String to LHS Path (Not reference, copy constructor takes const char* and char array)
 		
 		Path						operator+=					(Path& rhs);								// Append RHS Path to THIS
-		Path						operator+=					(std::string& rhs);							// Append RHS String to THIS
-		Path						operator+=					(const char *rhs);							// Append RHS Const Char Array to THIS
+		Path						operator+=					(std::string rhs);							// Append RHS String to THIS (Not reference, copy constructor takes const char* and char array)
 		
 		Path						operator=					(Path& rhs);								// Assign RHS Path to LHS Path
-		Path						operator=					(std::string& rhs);							// Assign RHS String to LHS Path
-		Path						operator=					(const char *rhs);							// Assign RHS Const Char Array to LHS Path
+		Path						operator=					(std::string rhs);							// Assign RHS String to LHS Path (Not reference, copy constructor takes const char* and char array)
 		
 		bool						operator==					(Path& rhs);								// Compare LHS Path to RHS Path
-		bool						operator==					(std::string& rhs);							// Compare LHS String to RHS Path
-		bool						operator==					(const char *rhs);							// Compare LHS Const Char Array to RHS Path
+		bool						operator==					(std::string rhs);							// Compare LHS String to RHS Path (Not reference, copy constructor takes const char* and char array)
 		
 		std::string					operator[]					(const unsigned int &index);				// Return specific component within the path
 		
@@ -91,6 +83,17 @@ class Path
 };
 
 
-
-
 #endif  PATH_H
+
+
+
+/*
+
+	// Virtual Filesystem Terminal
+	Path path("/root/");
+
+
+	// Print Root
+	std::cout << "path: " << path << std::endl;
+
+*/
